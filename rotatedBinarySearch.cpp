@@ -11,28 +11,24 @@ int updated_binary_search(vector<int>& v, int target, int& comparisons) {
     int right = n-1;
     while(left<=right) {
         int mid = (left+right)/2;
-        if(v[mid] == target) {
-            comparisons++;
+        if(++comparisons & (v[mid] == target)) {
             return mid;
         }
 
-        if (v[left] == v[mid] && v[mid] == v[right]) {
-            comparisons++;
+        if ( (comparisons+=2) && (v[left] == v[mid] && v[mid] == v[right]) ) {
             left++;
             right--;
             continue;
         }
 
-        if(v[left] <= v[mid]) {
-            comparisons+=2;
-            if(v[left] <= target && target < v[mid]) {
+        if( ++comparisons && (v[left] <= v[mid])) {
+            if((comparisons+=2) && (v[left] <= target && target < v[mid])){
                 right = mid - 1;
             } else {
                 left = mid + 1;
             }
         }else {
-            comparisons+=2;
-            if (v[mid] < target && target <= v[right]) {
+            if ((comparisons+=2) && (v[mid] < target && target <= v[right])) {
                 left = mid + 1;
             } else {
                 right = mid - 1;
@@ -44,15 +40,15 @@ int updated_binary_search(vector<int>& v, int target, int& comparisons) {
 
 
 int main() {
-    int comparisons = 0;
+    int comparisons1 = 0;
     vector<int> v = {5, 6, 7, 1, 2, 3, 4};
-    int res = updated_binary_search(v, 2, comparisons);
+    int res = updated_binary_search(v, 2, comparisons1);
 
     if(res != -1) {
         cout<<"Target found at index:"<< res<<endl;
     }else {
         cout<<"Target is not found"<<endl;
     }
-    cout<<"Total comparisons: "<<comparisons<<endl;
+    cout<<"Total comparisons: "<<comparisons1<<endl;
     return 0;
 }
